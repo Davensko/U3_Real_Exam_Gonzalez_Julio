@@ -1,0 +1,98 @@
+For the exam I use files exported from solidworks. 
+Note: check the folder Auxiliars. 
+
+Procedure:
+                              Calculations of the pololu motor
+ 
+To calculate  the max velocity I take from the datasheet the value of 290 RPM that belong of the 12 volts motor with high-power, 
+and I convert it on rad/s, as shown below: 
+
+    290 RPM to rad/s
+
+    2pi
+   ----- (290 RPM) = 30.36872898 rad/s
+    60
+
+To calculate  the max Torque I take from the datasheet the value of 120 oz-in that belong of the 12 volts motor with high-power, 
+and I convert it on Nm, as shown below:
+
+   120 oz-in to Nm
+
+    1 Nm = 141.611928935736 oz-in
+
+    (120 oz-in)(1 Nm)
+   ------------------- =   0.84738624 Nm
+  141.611928935736 oz-in
+
+                                          Encoder 
+
+To calculate  the resolution of the encoder I take from the datasheet the value of 1632.67 counts per revolution that belong of the 12 volts motor with high-power, and I convert it as shown below:
+
+                     2pi
+      Resolution =  -----  = 0.003848411073
+                   1632.67
+
+
+                                        lookuptable
+
+  I take from the datasheet the value of 16 bits, and do the shown belog: 
+
+     0       0    0                 2^(bit)-1 ==>     2^(16)-1 = 65535                
+    0.2    65535  0
+
+
+  The range of operation is from 0 to 200 mm. 
+
+
+  Comments about the code.
+
+The most important part on the code is to read the sensors on the correct way, doing that I will have the correct values of the distance on the distance sensor, on that way I was able to read the values of each distance sensor from 0.2 m to 0 m. 
+Once I read those values by code I used an "if" where I did the conditon that when a read the values of 0.17 (the value on m) I will rotate the robot depending on the value of each distance sensor. For the rotation I compare the value readed on each distance sensor, so, if the value of of the right distance sensor is more near that the left distance sensor the robot should rotate to the  left and viceversa.   
+The rotation is thanks to the compare variable upgrading the degree of rotation with the encoder. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
