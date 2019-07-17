@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.29393727305436274 -0.9394446785697729 -0.17619470882038737 5.147302478627516
-  position 1.0761990017777883 0.46797969546151447 0.6002075184690157
+  orientation 0.20495855455403367 -0.9639662508000454 -0.1695908553950514 4.864518748561369
+  position 1.2905516369932388 0.44915853092545355 -0.14015105163037941
 }
 TexturedBackground {
 }
@@ -121,7 +121,7 @@ Robot {
           ]
         }
         Transform {
-          translation 0 0.07 0
+          translation 0 0.08 0
           children [
             Shape {
               appearance PBRAppearance {
@@ -132,6 +132,75 @@ Robot {
               geometry Cylinder {
                 height 0.2
                 radius 0.015
+              }
+            }
+            HingeJoint {
+              jointParameters HingeJointParameters {
+                axis 0 1 0
+                anchor 0 0.09 0
+              }
+              endPoint Solid {
+                translation 0 0.09 -0.05999999999999994
+                rotation 1 0 0 1.5707999999999998
+                children [
+                  DEF rotate Shape {
+                    appearance PBRAppearance {
+                      baseColor 0.9882352941176471 0.6862745098039216 0.24313725490196078
+                      roughness 1
+                      metalness 0
+                    }
+                    geometry Box {
+                      size 0.015 0.09 0.015
+                    }
+                  }
+                  DistanceSensor {
+                    translation 0 -0.047 0
+                    rotation 0 0 1 4.71239
+                    children [
+                      DEF sen_gun_ Shape {
+                        appearance PBRAppearance {
+                          baseColor 0 0 0
+                          roughness 1
+                          metalness 0
+                        }
+                        geometry Box {
+                          size 0.004 0.015 0.015
+                        }
+                      }
+                    ]
+                    boundingObject USE sen_gun_
+                    physics Physics {
+                    }
+                  }
+                ]
+                boundingObject USE rotate
+                physics Physics {
+                }
+              }
+            }
+            HingeJoint {
+              jointParameters HingeJointParameters {
+                axis 0 1 0
+                anchor 0 0.04 0
+              }
+              endPoint Solid {
+                translation 0 0.04 -0.055
+                children [
+                  DEF gun Shape {
+                    appearance PBRAppearance {
+                      baseColor 0.8 0 0
+                      roughness 1
+                      metalness 0
+                    }
+                    geometry Box {
+                      size 0.015 0.015 0.08
+                    }
+                  }
+                ]
+                name "solid(1)"
+                boundingObject USE gun
+                physics Physics {
+                }
               }
             }
           ]
