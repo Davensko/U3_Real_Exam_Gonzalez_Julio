@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.20495855455403367 -0.9639662508000454 -0.1695908553950514 4.864518748561369
-  position 1.2905516369932388 0.44915853092545355 -0.14015105163037941
+  orientation 0.14921977691476748 -0.9739547827626379 -0.17072064699763084 4.552081291468794
+  position 1.1127086745601253 0.43500046601588344 -0.47048447398509674
 }
 TexturedBackground {
 }
@@ -171,6 +171,12 @@ Robot {
                     boundingObject USE sen_gun_
                     physics Physics {
                     }
+                    lookupTable [
+                      0 0 0
+                      0.1 52 0
+                      2 1023 0
+                    ]
+                    resolution 1024
                   }
                 ]
                 boundingObject USE rotate
@@ -896,9 +902,10 @@ Robot {
       boundingObject USE sen
       lookupTable [
         0 0 0
-        0.2 65535 0
+        0.05 32 0
+        0.4 255 0
       ]
-      resolution 1
+      resolution 256
     }
     DistanceSensor {
       translation -0.05 0 -0.076
@@ -910,9 +917,10 @@ Robot {
       boundingObject USE sen
       lookupTable [
         0 0 0
-        0.2 65535 0
+        0.05 32 0
+        0.4 255 0
       ]
-      resolution 1
+      resolution 256
     }
   ]
   boundingObject USE body
