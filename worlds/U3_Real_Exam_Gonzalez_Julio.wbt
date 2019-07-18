@@ -2,8 +2,10 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.14921977691476748 -0.9739547827626379 -0.17072064699763084 4.552081291468794
-  position 1.1127086745601253 0.43500046601588344 -0.47048447398509674
+  orientation 0.7969211475301856 0.5584868786025948 0.23023703231214274 5.328393827895088
+  position -1.3489793226801112 3.4650686979408336 2.946203166736899
+  follow "robot"
+  followOrientation TRUE
 }
 TexturedBackground {
 }
@@ -139,6 +141,11 @@ Robot {
                 axis 0 1 0
                 anchor 0 0.09 0
               }
+              device [
+                RotationalMotor {
+                  name "Radar"
+                }
+              ]
               endPoint Solid {
                 translation 0 0.09 -0.05999999999999994
                 rotation 1 0 0 1.5707999999999998
@@ -168,15 +175,16 @@ Robot {
                         }
                       }
                     ]
+                    name "distance_sensor"
                     boundingObject USE sen_gun_
                     physics Physics {
                     }
                     lookupTable [
                       0 0 0
-                      0.1 52 0
+                      0.1 0 0
                       2 1023 0
                     ]
-                    resolution 1024
+                    resolution 1
                   }
                 ]
                 boundingObject USE rotate
@@ -189,6 +197,11 @@ Robot {
                 axis 0 1 0
                 anchor 0 0.04 0
               }
+              device [
+                RotationalMotor {
+                  name "Gun"
+                }
+              ]
               endPoint Solid {
                 translation 0 0.04 -0.055
                 children [
@@ -886,8 +899,8 @@ Robot {
       }
     }
     DistanceSensor {
-      translation 0.05 0 -0.076
-      rotation 0 1 0 1.48353
+      translation 0 0 -0.076
+      rotation 0 1 0 1.5708
       children [
         DEF sen Shape {
           appearance PBRAppearance {
@@ -902,29 +915,52 @@ Robot {
       boundingObject USE sen
       lookupTable [
         0 0 0
-        0.05 32 0
+        0.05 0 0
         0.4 255 0
       ]
-      resolution 256
-    }
-    DistanceSensor {
-      translation -0.05 0 -0.076
-      rotation 0 1 0 1.65806
-      children [
-        USE sen
-      ]
-      name "sen_2"
-      boundingObject USE sen
-      lookupTable [
-        0 0 0
-        0.05 32 0
-        0.4 255 0
-      ]
-      resolution 256
+      resolution 1
     }
   ]
   boundingObject USE body
   physics Physics {
   }
-  controller "u3_exam_gonzalez_julio"
+  controller "U3_Real_Exam_Gonzalez_Julio"
+}
+DEF Obstacle Solid {
+  translation 0 0.1 -1
+  children [
+    DEF obs Shape {
+      appearance PBRAppearance {
+        baseColor 0.7568627450980392 0.49019607843137253 0.06666666666666667
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.3 0.2 0.08
+      }
+    }
+  ]
+  boundingObject USE obs
+  physics Physics {
+  }
+}
+DEF Enemy Solid {
+  translation 2.28999999467766 0.15 -0.6299999670590575
+  rotation 0 0.9999999999999999 0 4.712388966
+  children [
+    DEF obs Shape {
+      appearance PBRAppearance {
+        baseColor 0.45098039215686275 0.8235294117647058 0.08627450980392157
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.3 0.3 0.08
+      }
+    }
+  ]
+  name "solid(1)"
+  boundingObject USE obs
+  physics Physics {
+  }
 }
