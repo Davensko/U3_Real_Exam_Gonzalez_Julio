@@ -66,7 +66,7 @@ int checkForEnemy(WbDeviceTag distance_sensor) {
   dis2 = (distance2*RANGE2)/MAXRE2;
   
   if(dis2 <= 0.7) {
-    printf("Enemy: THA\n");
+    printf("Enemy: THA!\n");
   }
  
   //printf("Distance Enemy: %f\n", dis2);
@@ -227,13 +227,13 @@ int main(int argc, char **argv)
           rotateGun(gun, pos);
         
             if (dis2 >= 0.7 && dis2 <= 0.5 ) {
-              printf("Enemy: THA\n");
+              printf("Enemy: THA!\n");
             }
             else if (dis2 <= 0.5 && dis2 >= 0.2) {
-              printf("Enemy: THA THA\n");
+              printf("Enemy: THA THA!!\n");
             }
             else if (dis2 <= 0.2 && dis2 >= 0.1) {
-              printf("Enemy: THA THA THA\n");
+              printf("Enemy: THA THA THA!!!\n");
             }
         }
     } 
