@@ -30,7 +30,6 @@
 #define MAXRE2 1023
 
 double encoder;
-
 double dis;
 double dis2;  
 
@@ -52,8 +51,8 @@ int checkForObstacles(WbDeviceTag sen_1) {
   
   dis = (distance*RANGE)/MAXRE;
   
-  printf("Value of resolution: %f\n", distance);
-  printf("Distance: %f\n", dis); 
+  //printf("Value of resolution: %f\n", distance);
+  //printf("Distance: %f\n", dis); 
   
   if (dis > OBSTACLE_DISTANCE)
     return FREEWAY;
@@ -70,7 +69,7 @@ int checkForEnemy(WbDeviceTag distance_sensor) {
     printf("Enemy: THA\n");
   }
  
-  printf("Distance Enemy: %f\n", dis2);
+  //printf("Distance Enemy: %f\n", dis2);
   
   if (dis2 > OBSTACLE_DISTANCE_2)
     return NOENEMY;
@@ -94,6 +93,7 @@ void stopRobot(WbDeviceTag *wheels) {
 }
 
 void turnRight(WbDeviceTag *wheels) {
+
   wb_motor_set_velocity(wheels[0], 0.6);
   wb_motor_set_velocity(wheels[1], 0.6);
   wb_motor_set_velocity(wheels[2], 0.6);
@@ -119,7 +119,6 @@ double getAngleRobot(WbDeviceTag pos_sensor) {
   double angle, angle_wheel1;
 
   angle_wheel1 = wb_position_sensor_get_value(pos_sensor);
-
   angle = fabs(angle_wheel1 - initial_angle_wheel1);
 
   return angle;
@@ -131,7 +130,7 @@ double getAngle(WbDeviceTag radar_sensor) {
   radar_angle = wb_position_sensor_get_value(radar_sensor);
   
   angle2 = radar_angle; 
-  printf("enco_radar: %f\n", radar_angle);
+  //printf("enco_radar: %f\n", radar_angle);
   
   return angle2; 
 }
@@ -166,8 +165,8 @@ int main(int argc, char **argv)
   WbDeviceTag enco_radar = wb_robot_get_device("enco_radar");
   wb_position_sensor_enable(enco_radar, TIME_STEP);
   
-  WbDeviceTag enco_gun = wb_robot_get_device("enco_gun");
-  wb_position_sensor_enable(enco_gun, TIME_STEP);
+  //WbDeviceTag enco_gun = wb_robot_get_device("enco_gun");
+  //wb_position_sensor_enable(enco_gun, TIME_STEP);
 
   // Distance sensor devices
   WbDeviceTag dist_sensor = wb_robot_get_device("sen_1");
@@ -187,59 +186,56 @@ int main(int argc, char **argv)
     
     rotateSensor(radar);
       
-
     if (robot_state == GO) {
       ds_state = checkForObstacles(dist_sensor);
       
       if (ds_state == FREEWAY) {
         goRobot(wheels, velocity);
         angle = wb_position_sensor_get_value(encoder);
-        printf("Angle: %lf\n", angle);
-      }
-      else if (ds_state == OBSTACLE) {
+        //printf("Angle: %lf\n", angle);
+        
+      } else if (ds_state == OBSTACLE) {
         robot_state = TURN;
         stopRobot(wheels);
         initial_angle_wheel1 = wb_position_sensor_get_value(encoder);
       }
-    }
-    else if (robot_state == TURN) {
-      turnRight(wheels);
-      angle = getAngleRobot(encoder);
+    } else if (robot_state == TURN) {
+        turnRight(wheels);
+        angle = getAngleRobot(encoder);
       
-      if (angle >= PI ) {
-        robot_state = LOOKING;  
-        stopRobot(wheels);
-      }
+          if (angle >= PI ) {
+            robot_state = LOOKING;  
+            stopRobot(wheels);
+          }
     }
     if (robot_state == LOOKING) {
       ds_state = checkForEnemy(rad); 
       
-      if (ds_state == NOENEMY) {
-        goRobot(wheels, velocity);
-      }
-      else if (ds_state == ENEMY) {
-        ds_state = STOP;
-        stopRobot(wheels);
-        stopSensor(radar);
-        angle2 = getAngle(enco_radar);
-        pos = (vueltas + angle2)*-1; 
-        printf("Pos: %lf\n", pos); 
-    
-      }
-      if (ds_state== STOP) {
+        if (ds_state == NOENEMY) {
+          goRobot(wheels, velocity);
+        }
+        else if (ds_state == ENEMY) {
+          ds_state = STOP;
+          stopRobot(wheels);
+          stopSensor(radar);
+          angle2 = getAngle(enco_radar);
+          pos = (vueltas + angle2)*-1; 
+          //printf("Pos: %lf\n", pos); 
+        }
+        if (ds_state== STOP) {
        
-        rotateGun(gun, pos);
+          rotateGun(gun, pos);
         
-         if (dis2 >= 0.7 && dis2 <= 0.5 ) {
-          printf("Enemy: THA\n");
-         }
-         else if (dis2 <= 0.5 && dis2 >= 0.2) {
-          printf("Enemy: THA THA\n");
-         }
-         else if (dis2 <= 0.2 && dis2 >= 0.1) {
-          printf("Enemy: THA THA THA\n");
-         }
-      }
+            if (dis2 >= 0.7 && dis2 <= 0.5 ) {
+              printf("Enemy: THA\n");
+            }
+            else if (dis2 <= 0.5 && dis2 >= 0.2) {
+              printf("Enemy: THA THA\n");
+            }
+            else if (dis2 <= 0.2 && dis2 >= 0.1) {
+              printf("Enemy: THA THA THA\n");
+            }
+        }
     } 
     
   };
