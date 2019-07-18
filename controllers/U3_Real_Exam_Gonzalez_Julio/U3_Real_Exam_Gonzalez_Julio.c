@@ -64,13 +64,7 @@ int checkForEnemy(WbDeviceTag distance_sensor) {
   double distance2 = wb_distance_sensor_get_value(distance_sensor);
   
   dis2 = (distance2*RANGE2)/MAXRE2;
-  
-  if(dis2 <= 0.7) {
-    printf("Enemy: THA!\n");
-  }
- 
-  //printf("Distance Enemy: %f\n", dis2);
-  
+   
   if (dis2 > OBSTACLE_DISTANCE_2)
     return NOENEMY;
   else
@@ -112,6 +106,19 @@ void stopSensor(WbDeviceTag *radar) {
 void rotateGun(WbDeviceTag *gun, double pos) {
   wb_motor_set_position(gun[0], pos);
   
+}
+
+void shoot() {
+
+  if (dis2 <= 0.7 && dis2 >= 0.5 ) {
+    printf("Enemy: THA!\n");
+  }
+  else if (dis2 <= 0.49 && dis2 >= 0.2) {
+    printf("Enemy: THA THA!!\n");
+  }
+  else if (dis2 <= 0.19 && dis2 >= 0.1) {
+    printf("Enemy: THA THA THA!!!\n");
+  }
 }
 
 double getAngleRobot(WbDeviceTag pos_sensor) {
@@ -225,16 +232,7 @@ int main(int argc, char **argv)
         if (ds_state== STOP) {
        
           rotateGun(gun, pos);
-        
-            if (dis2 >= 0.7 && dis2 <= 0.5 ) {
-              printf("Enemy: THA!\n");
-            }
-            else if (dis2 <= 0.5 && dis2 >= 0.2) {
-              printf("Enemy: THA THA!!\n");
-            }
-            else if (dis2 <= 0.2 && dis2 >= 0.1) {
-              printf("Enemy: THA THA THA!!!\n");
-            }
+          shoot(); 
         }
     } 
     
