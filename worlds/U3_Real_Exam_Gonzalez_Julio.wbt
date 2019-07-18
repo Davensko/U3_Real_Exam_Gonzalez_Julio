@@ -5,7 +5,6 @@ Viewpoint {
   orientation 0.7969211475301856 0.5584868786025948 0.23023703231214274 5.328393827895088
   position -1.3489793226801112 3.4650686979408336 2.946203166736899
   follow "robot"
-  followOrientation TRUE
 }
 TexturedBackground {
 }
@@ -145,6 +144,9 @@ Robot {
                 RotationalMotor {
                   name "Radar"
                 }
+                PositionSensor {
+                  name "enco_radar"
+                }
               ]
               endPoint Solid {
                 translation 0 0.09 -0.05999999999999994
@@ -200,6 +202,9 @@ Robot {
               device [
                 RotationalMotor {
                   name "Gun"
+                }
+                PositionSensor {
+                  name "enco_gun "
                 }
               ]
               endPoint Solid {

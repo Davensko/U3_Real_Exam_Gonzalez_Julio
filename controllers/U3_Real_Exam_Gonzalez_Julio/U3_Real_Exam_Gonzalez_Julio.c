@@ -76,11 +76,6 @@ int checkForEnemy(WbDeviceTag distance_sensor) {
     return NOENEMY;
   else
     return ENEMY;
-   /* 
-  if(dis2 = 0.7) {
-    printf("Enemy: THA\n");
-  }
-  */
 }
 
 void goRobot(WbDeviceTag *wheels, double velocity) {
@@ -114,27 +109,11 @@ void stopSensor(WbDeviceTag *radar) {
   wb_motor_set_velocity(radar[0], 0);
 }
 
-void rotateGun(WbDeviceTag *gun) {
-  wb_motor_set_position(gun[0], INFINITY);
-  wb_motor_set_velocity(gun[0], -2);
+void rotateGun(WbDeviceTag *gun, double pos) {
+  wb_motor_set_position(gun[0], pos);
+  
 }
 
-void stopGun(WbDeviceTag *gun) {
-  wb_motor_set_position(gun[0], INFINITY);
-  wb_motor_set_velocity(gun[0], 0);
-}
-/*
-void impresion(WbDeviceTag distance_sensor) {
-  
-  double distance2 = wb_distance_sensor_get_value(distance_sensor);
-  
-  dis2 = (distance2*RANGE2)/MAXRE2;
-  
-  if (dis2 == 0.7) {
-    printf("Enemy: THA\n");
-  }
-} 
-*/
 double getAngleRobot(WbDeviceTag pos_sensor) {
   
   double angle, angle_wheel1;
@@ -145,6 +124,18 @@ double getAngleRobot(WbDeviceTag pos_sensor) {
 
   return angle;
 }
+
+double getAngle(WbDeviceTag radar_sensor) {
+  double  angle2, radar_angle; 
+  
+  radar_angle = wb_position_sensor_get_value(radar_sensor);
+  
+  angle2 = radar_angle; 
+  printf("enco_radar: %f\n", radar_angle);
+  
+  return angle2; 
+}
+
 
 int main(int argc, char **argv)
 {
@@ -171,6 +162,12 @@ int main(int argc, char **argv)
   // Encoder devices
   WbDeviceTag encoder = wb_robot_get_device("encoder_1");
   wb_position_sensor_enable(encoder, TIME_STEP);
+  
+  WbDeviceTag enco_radar = wb_robot_get_device("enco_radar");
+  wb_position_sensor_enable(enco_radar, TIME_STEP);
+  
+  WbDeviceTag enco_gun = wb_robot_get_device("enco_gun");
+  wb_position_sensor_enable(enco_gun, TIME_STEP);
 
   // Distance sensor devices
   WbDeviceTag dist_sensor = wb_robot_get_device("sen_1");
@@ -182,10 +179,14 @@ int main(int argc, char **argv)
   short int ds_state,robot_state = GO;
   float velocity = 2.5;
   float angle;
+  float angle2; 
+  float pos; 
+  int vueltas = 50;  
 
   while (wb_robot_step(TIME_STEP) != -1) {
     
-    rotateSensor(radar); 
+    rotateSensor(radar);
+      
 
     if (robot_state == GO) {
       ds_state = checkForObstacles(dist_sensor);
@@ -193,7 +194,7 @@ int main(int argc, char **argv)
       if (ds_state == FREEWAY) {
         goRobot(wheels, velocity);
         angle = wb_position_sensor_get_value(encoder);
-        printf("Angle: %lf\n", angle); 
+        printf("Angle: %lf\n", angle);
       }
       else if (ds_state == OBSTACLE) {
         robot_state = TURN;
@@ -220,18 +221,24 @@ int main(int argc, char **argv)
         ds_state = STOP;
         stopRobot(wheels);
         stopSensor(radar);
-        
-        if (dis2 >= 0.7) {
-          printf("Enemy: THA\n");
-        }
-        else if (dis2 >= 0.5) {
-          printf("Enemy: THA THA\n");
-        }
-        else if (dis2 >= 0.2) {
-          printf("Enemy: THA THA THA\n");
-        }
-      
+        angle2 = getAngle(enco_radar);
+        pos = (vueltas + angle2)*-1; 
+        printf("Pos: %lf\n", pos); 
+    
+      }
+      if (ds_state== STOP) {
        
+        rotateGun(gun, pos);
+        
+         if (dis2 >= 0.7 && dis2 <= 0.5 ) {
+          printf("Enemy: THA\n");
+         }
+         else if (dis2 <= 0.5 && dis2 >= 0.2) {
+          printf("Enemy: THA THA\n");
+         }
+         else if (dis2 <= 0.2 && dis2 >= 0.1) {
+          printf("Enemy: THA THA THA\n");
+         }
       }
     } 
     
