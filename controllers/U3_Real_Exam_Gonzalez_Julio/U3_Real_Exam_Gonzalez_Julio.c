@@ -187,7 +187,7 @@
       if (ds_state == FREEWAY) {
         goRobot(wheels, velocity);
         angle = wb_position_sensor_get_value(encoder);
-        //printf("Angle: %lf\n", angle);
+        //printf("Angle: %lf\n", angle); for debug
 
       } else if (ds_state == OBSTACLE) {
         robot_state = TURN;
@@ -206,20 +206,20 @@
     if (robot_state == LOOKING) {
       ds_state = checkForEnemy(rad);
 
-        if (ds_state == NOENEMY) {
-          goRobot(wheels, velocity);
-        } else if (ds_state == ENEMY) {
-            ds_state = STOP;
-            stopRobot(wheels);
-            stopSensor(radar);
-            angle2 = getAngle(enco_radar);
-            pos = (vueltas + angle2)*-1;
-          //printf("Pos: %lf\n", pos);
-        }
-        if (ds_state== STOP) {
-          rotateGun(gun, pos);
-          shoot();
-        }
+      if (ds_state == NOENEMY) {
+        goRobot(wheels, velocity);
+      } else if (ds_state == ENEMY) {
+        ds_state = STOP;
+        stopRobot(wheels);
+        stopSensor(radar);
+        angle2 = getAngle(enco_radar);
+        pos = (vueltas + angle2)*-1;
+        //printf("Pos: %lf\n", pos); for debug
+      }
+      if (ds_state== STOP) {
+        rotateGun(gun, pos);
+        shoot();
+      }
     }
 
   };
